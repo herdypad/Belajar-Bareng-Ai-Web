@@ -1,0 +1,133 @@
+@import "tailwindcss";
+
+/* Dark mode berbasis class .dark di <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Token warna ala Material 3 (seed: indigo/violet) */
+:root {
+  --md-primary: #4f46e5;
+  --md-on-primary: #ffffff;
+  --md-primary-container: #e2dfff;
+  --md-on-primary-container: #16115c;
+  --md-secondary-container: #e4e1f5;
+  --md-on-secondary-container: #1c1b2e;
+  --md-surface: #fcfbff;
+  --md-surface-container-low: #f6f4fb;
+  --md-surface-container: #f0eef7;
+  --md-surface-container-high: #e9e7f1;
+  --md-on-surface: #1b1b21;
+  --md-on-surface-variant: #47464f;
+  --md-outline: #787680;
+  --md-outline-variant: #c8c5d0;
+  --md-success: #1b7a3d;
+  --md-success-container: #d3f5dc;
+  --md-on-success-container: #002110;
+  --md-error: #ba1a1a;
+  --md-error-container: #ffdad6;
+  --md-on-error-container: #410002;
+  --md-warning-container: #ffe08a;
+  --md-on-warning-container: #241a00;
+}
+
+.dark {
+  --md-primary: #c3c0ff;
+  --md-on-primary: #2a2478;
+  --md-primary-container: #413b90;
+  --md-on-primary-container: #e2dfff;
+  --md-secondary-container: #454458;
+  --md-on-secondary-container: #e4e1f5;
+  --md-surface: #131318;
+  --md-surface-container-low: #1b1b21;
+  --md-surface-container: #1f1f25;
+  --md-surface-container-high: #2a292f;
+  --md-on-surface: #e5e1e9;
+  --md-on-surface-variant: #c8c5d0;
+  --md-outline: #928f9a;
+  --md-outline-variant: #47464f;
+  --md-success: #7ddc97;
+  --md-success-container: #005229;
+  --md-on-success-container: #99f9b1;
+  --md-error: #ffb4ab;
+  --md-error-container: #93000a;
+  --md-on-error-container: #ffdad6;
+  --md-warning-container: #574500;
+  --md-on-warning-container: #ffe08a;
+}
+
+@theme inline {
+  --color-primary: var(--md-primary);
+  --color-on-primary: var(--md-on-primary);
+  --color-primary-container: var(--md-primary-container);
+  --color-on-primary-container: var(--md-on-primary-container);
+  --color-secondary-container: var(--md-secondary-container);
+  --color-on-secondary-container: var(--md-on-secondary-container);
+  --color-surface: var(--md-surface);
+  --color-surface-container-low: var(--md-surface-container-low);
+  --color-surface-container: var(--md-surface-container);
+  --color-surface-container-high: var(--md-surface-container-high);
+  --color-on-surface: var(--md-on-surface);
+  --color-on-surface-variant: var(--md-on-surface-variant);
+  --color-outline: var(--md-outline);
+  --color-outline-variant: var(--md-outline-variant);
+  --color-success: var(--md-success);
+  --color-success-container: var(--md-success-container);
+  --color-on-success-container: var(--md-on-success-container);
+  --color-error: var(--md-error);
+  --color-error-container: var(--md-error-container);
+  --color-on-error-container: var(--md-on-error-container);
+  --color-warning-container: var(--md-warning-container);
+  --color-on-warning-container: var(--md-on-warning-container);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --animate-fade-in: fade-in 0.25s ease-out both;
+  --animate-slide-up: slide-up 0.3s cubic-bezier(0.2, 0, 0, 1) both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+html {
+  background: var(--md-surface);
+}
+
+body {
+  background: var(--md-surface);
+  color: var(--md-on-surface);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+/* Native <dialog> */
+dialog::backdrop {
+  background: rgb(0 0 0 / 0.45);
+  animation: fade-in 0.2s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
