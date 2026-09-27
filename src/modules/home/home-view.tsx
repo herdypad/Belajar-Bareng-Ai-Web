@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { Icon } from "@/components/icon";
 import { QuizCard } from "@/components/quiz-card";
-import { Alert, ButtonLink, Card, EmptyState, PageLoading } from "@/components/ui";
+import { Alert, Button, ButtonLink, Card, EmptyState, PageLoading } from "@/components/ui";
 import { PROVIDER_LABEL } from "@/lib/constants";
 import {
   useQuizStats,
@@ -13,6 +14,7 @@ import {
 } from "@/lib/repository";
 import { useHydrated } from "@/lib/storage";
 import { percent } from "@/lib/utils";
+import { ImportQuizDialog } from "./import-quiz-dialog";
 
 export function HomeView() {
   const hydrated = useHydrated();
@@ -20,6 +22,15 @@ export function HomeView() {
   const results = useResults();
   const stats = useQuizStats();
   const settings = useSettings();
+  const [importOpen, setImportOpen] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+
+  // Sembunyikan notifikasi sukses setelah beberapa detik
+  useEffect(() => {
+    if (!notice) return;
+    const t = setTimeout(() => setNotice(null), 4000);
+    return () => clearTimeout(t);
+  }, [notice]);
 
   if (!hydrated) return <PageLoading />;
 
@@ -57,6 +68,14 @@ export function HomeView() {
             <ButtonLink href="/create" icon="plus" className="h-12 px-6 text-base">
               Buat Kuis Baru
             </ButtonLink>
+            <Button
+              variant="outlined"
+              icon="upload"
+              className="h-12 px-6"
+              onClick={() => setImportOpen(true)}
+            >
+              Import Soal
+            </Button>
             {quizzes.length > 0 && (
               <ButtonLink href="/history" variant="outlined" icon="history" className="h-12 px-6">
                 Lihat Riwayat
@@ -65,6 +84,8 @@ export function HomeView() {
           </div>
         </div>
       </section>
+
+      {notice && <Alert tone="success">{notice}</Alert>}
 
       {!hasKey && (
         <Alert tone="warning">
@@ -97,11 +118,16 @@ export function HomeView() {
           <EmptyState
             icon="sparkles"
             title="Belum ada kuis"
-            description="Buat kuis pertamamu. Semua kuis tersimpan di perangkat ini dan bisa dikerjakan ulang secara offline."
+            description="Buat atau import kuis pertamamu. Semua kuis tersimpan di perangkat ini dan bisa dikerjakan ulang secara offline."
             action={
-              <ButtonLink href="/create" icon="plus">
-                Buat Kuis
-              </ButtonLink>
+              <div className="flex flex-wrap justify-center gap-2">
+                <ButtonLink href="/create" icon="plus">
+                  Buat Kuis
+                </ButtonLink>
+                <Button variant="outlined" icon="upload" onClick={() => setImportOpen(true)}>
+                  Import Soal
+                </Button>
+              </div>
             }
           />
         ) : (
@@ -120,6 +146,14 @@ export function HomeView() {
           </div>
         )}
       </section>
+
+      <ImportQuizDialog
+        open={importOpen}
+        onClose={() => setImportOpen(false)}
+        onSaved={(quiz) =>
+          setNotice(`Kuis "${quiz.title}" (${quiz.totalQuestions} soal) berhasil diimpor.`)
+        }
+      />
     </div>
   );
 }

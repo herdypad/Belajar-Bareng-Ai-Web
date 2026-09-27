@@ -50,4 +50,5 @@ export function percent(score: number, total: number): number {
   return Math.round((score / total) * 100);
 }
 
-export const OPTION_LETTERS = ["A", "B", "C", "D"] as const;
+/** Label opsi A-Z (soal hasil import bisa punya lebih/kurang dari 4 opsi). */
+export const OPTION_LETTERS: readonly string[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");

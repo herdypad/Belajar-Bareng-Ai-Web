@@ -57,6 +57,22 @@ export function createQuiz(input: {
   return quiz;
 }
 
+/** Simpan kuis hasil import JSON. */
+export function saveImportedQuiz(input: {
+  title: string;
+  description?: string;
+  durationMinutes: number;
+  questions: GenerateResponse["questions"];
+}): Quiz {
+  return createQuiz({
+    description: input.description?.trim() || "Diimpor dari file/teks JSON",
+    durationMinutes: input.durationMinutes,
+    provider: "import",
+    model: "",
+    generated: { title: input.title, questions: input.questions },
+  });
+}
+
 export function deleteQuiz(id: string) {
   const quizzes = readStorage(STORAGE_KEYS.quizzes, EMPTY_QUIZZES);
   writeStorage(

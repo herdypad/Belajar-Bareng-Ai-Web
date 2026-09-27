@@ -164,12 +164,14 @@ function ReviewCard({ q, index, answer }: { q: Question; index: number; answer: 
         })}
       </ul>
 
-      <div className="mt-4 rounded-2xl bg-surface-container p-4 text-sm">
-        <p className="mb-1 flex items-center gap-1.5 font-semibold text-primary">
-          <Icon name="sparkles" size={16} /> Pembahasan
-        </p>
-        <p className="whitespace-pre-line leading-relaxed text-on-surface-variant">{q.explanation}</p>
-      </div>
+      {q.explanation.trim() && (
+        <div className="mt-4 rounded-2xl bg-surface-container p-4 text-sm">
+          <p className="mb-1 flex items-center gap-1.5 font-semibold text-primary">
+            <Icon name="sparkles" size={16} /> Pembahasan
+          </p>
+          <p className="whitespace-pre-line leading-relaxed text-on-surface-variant">{q.explanation}</p>
+        </div>
+      )}
     </Card>
   );
 }

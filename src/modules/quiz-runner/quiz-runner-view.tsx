@@ -128,7 +128,8 @@ function Runner({ quiz, attempt }: { quiz: Quiz; attempt: QuizAttempt | null }) 
       const map: Record<string, number> = { "1": 0, "2": 1, "3": 2, "4": 3, a: 0, b: 1, c: 2, d: 3 };
       if (key in map) {
         e.preventDefault();
-        choose(map[key]);
+        // Soal hasil import bisa punya < 4 opsi
+        if (map[key] < (quiz.questions[current]?.options.length ?? 0)) choose(map[key]);
       } else if (e.key === "ArrowRight") {
         goTo(current + 1);
       } else if (e.key === "ArrowLeft") {
@@ -139,7 +140,7 @@ function Runner({ quiz, attempt }: { quiz: Quiz; attempt: QuizAttempt | null }) 
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [confirm, choose, goTo, toggleFlag, current]);
+  }, [confirm, choose, goTo, toggleFlag, current, quiz.questions]);
 
   if (!valid) return <PageLoading />;
 

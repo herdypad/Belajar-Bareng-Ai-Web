@@ -2,9 +2,9 @@ export type AiProvider = "openai" | "anthropic";
 
 export interface Question {
   question: string;
-  options: string[]; // selalu 4 opsi
-  correctIndex: number; // 0-3
-  explanation: string;
+  options: string[]; // hasil AI selalu 4 opsi; hasil import minimal 2
+  correctIndex: number; // index ke options
+  explanation: string; // bisa kosong untuk soal hasil import
 }
 
 export interface Quiz {
@@ -14,7 +14,7 @@ export interface Quiz {
   totalQuestions: number;
   durationMinutes: number;
   createdAt: number; // epoch ms
-  provider: AiProvider;
+  provider: AiProvider | "import"; // "import" = diimpor dari JSON
   model: string;
   questions: Question[];
 }
