@@ -187,7 +187,7 @@ function Runner({ quiz, attempt }: { quiz: Quiz; attempt: QuizAttempt | null }) 
             <Icon name="clock" size={16} />
             {formatClock(remainingSec)}
           </div>
-          <Button className="hidden sm:inline-flex" icon="check" onClick={() => setConfirm("submit")}>
+          <Button className="max-sm:hidden" icon="check" onClick={() => setConfirm("submit")}>
             Kumpulkan
           </Button>
         </div>

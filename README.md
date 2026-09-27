@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Belajar Bareng AI
 
-## Getting Started
+Aplikasi latihan soal pilihan ganda yang di-generate AI (OpenAI / Anthropic). Spesifikasi: [`specs/PRD.md`](specs/PRD.md).
 
-First, run the development server:
+## Menjalankan
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build && npm start   # production (service worker offline aktif)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka **Pengaturan**, pilih provider, isi API key, lalu **Buat Kuis**.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Struktur
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/                 # routing (App Router)
+│   ├── api/generate/    # proxy ke OpenAI/Anthropic + validasi JSON
+│   ├── create, quiz, result, review, history, settings
+├── modules/             # tampilan per fitur (home, create-quiz, quiz-runner, result, review, history, settings)
+├── components/          # UI bersama (tombol, dialog, navigasi, ikon)
+└── lib/                 # model data, repository localStorage, parser soal, tema
+public/sw.js             # service worker untuk akses offline
+```
 
-## Learn More
+## Catatan
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Data (kuis, hasil, sesi pengerjaan, pengaturan) tersimpan di `localStorage` browser, tanpa login.
+- Sesi pengerjaan disimpan per kuis, jadi refresh tidak mereset timer. Kalau waktu habis, jawaban dikumpulkan otomatis.
+- API key dikirim ke `/api/generate` hanya saat generate soal, lalu diteruskan ke provider. Server tidak menyimpan key.
+- Endpoint `/api/generate` tidak memakai autentikasi. Kalau di-deploy publik, tambahkan rate limiting.
